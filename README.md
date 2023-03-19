@@ -1,6 +1,8 @@
 # FLUXOS-LOTTERY
 
+### INSTALL
+git clone 
 ### USAGE
 ```
-node apps.js <winner_number> <apps_name1> <apps_name2> ...
+node apps.js <winner_number> <keyword1> <keyword2> <keywordx> ...
 ```
