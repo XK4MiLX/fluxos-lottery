@@ -9,7 +9,6 @@ function between(min, max) {
   )
 }
 
-
 async function getAppSpecifications() {
   try {
     const fluxnodeList = await axios.get('https://api.runonflux.io/apps/globalappsspecifications', axiosConfig);
@@ -33,21 +32,30 @@ async function start(type , winners) {
   let winner_list = [];
   let instances = [];
   let appsDetails = await getAppSpecifications();
-  for (const appSpecs of appsDetails) {
-   if (filter.some((word) => appSpecs.name.startsWith(word))) {
-    if ( zelid_array.indexOf(appSpecs.owner) !== -1 )  {
+  if ( winners != "max" ) {
+    for (const appSpecs of appsDetails) {
+      if (filter.some((word) => appSpecs.name.startsWith(word))) {
          zelid_array.push(`${appSpecs.owner}`);
-         name_array.push(`${appSpecs.name}`);
-         instances.push(`${appSpecs.instances}`);
-    } else {
-      instances[zelid_array.indexOf(appSpecs.owner)] = Number(instances[zelid_array.indexOf(appSpecs.owner)]) + Number(appSpecs.instances)
+          name_array.push(`${appSpecs.name}`);
+      }
     }
-   }
+  } else {
+     for (const appSpecs of appsDetails) {
+       if (filter.some((word) => appSpecs.name.startsWith(word))) {
+          if ( zelid_array.indexOf(appSpecs.owner) === -1 )  {
+            zelid_array.push(`${appSpecs.owner}`);
+            name_array.push(`${appSpecs.name}`);
+            instances.push(`${appSpecs.instances}`);
+          } else {
+            instances[zelid_array.indexOf(appSpecs.owner)] = Number(instances[zelid_array.indexOf(appSpecs.owner)]) + Number(appSpecs.instances)
+          }
+       }
+    }
+    let result = instances.indexOf(Math.max(...instances));
+    console.log(`| Winner =>  ${zelid_array[result]}, ${Math.max(...instances)}`);
+    console.log('------------------------------------------------------------------------------------------------');
+    return
   }
-
-var result = instances.indexOf(Math.max(...instances));
-console.log(`| Winner =>  ${zelid_array[result]}, ${Math.max(...instances)}`);
-exit
   
   for (var i = 0; i < winners; i++){
     let winnerNumber = between(0,zelid_array.length-1);
