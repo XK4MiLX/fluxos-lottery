@@ -31,13 +31,24 @@ async function start(type , winners) {
   let zelid_array = [];
   let name_array = [];
   let winner_list = [];
+  let instances = [];
   let appsDetails = await getAppSpecifications();
   for (const appSpecs of appsDetails) {
    if (filter.some((word) => appSpecs.name.startsWith(word))) {
-       zelid_array.push(`${appSpecs.owner}`);
-       name_array.push(`${appSpecs.name}`);
+    if ( zelid_array.indexOf(appSpecs.owner) !== -1 )  {
+         zelid_array.push(`${appSpecs.owner}`);
+         name_array.push(`${appSpecs.name}`);
+         instances.push(`${appSpecs.instances}`);
+    } else {
+      instances[zelid_array.indexOf(appSpecs.owner)] = Number(instances[zelid_array.indexOf(appSpecs.owner)]) + Number(appSpecs.instances)
+    }
    }
   }
+
+var result = instances.indexOf(Math.max(...instances));
+console.log(`| Winner =>  ${zelid_array[result]}, ${Math.max(...instances)}`);
+exit
+  
   for (var i = 0; i < winners; i++){
     let winnerNumber = between(0,zelid_array.length-1);
     let index = winner_list.indexOf(zelid_array[winnerNumber]);
