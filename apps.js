@@ -35,8 +35,8 @@ async function start(type , winners) {
   if ( winners != "max" ) {
     for (const appSpecs of appsDetails) {
       if (filter.some((word) => appSpecs.name.startsWith(word))) {
-         zelid_array.push(`${appSpecs.owner}`);
-          name_array.push(`${appSpecs.name}`);
+        zelid_array.push(`${appSpecs.owner}`);
+        name_array.push(`${appSpecs.name}`);
       }
     }
   } else {
